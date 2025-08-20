@@ -91,8 +91,10 @@ registerBtn.addEventListener('click', () => {
                 role: 'customer',
                 points: 0
             }).then(() => {
-                alert('Registration successful!');
+                alert('Registration successful! Redirecting to your dashboard...');
                 window.location.href = 'customer-dashboard.html';
+            }).catch(err => {
+                alert('Error saving user data: ' + err.message);
             });
         })
         .catch(error => {
