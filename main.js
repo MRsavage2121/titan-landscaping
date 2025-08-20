@@ -1,115 +1,50 @@
-// ================================
-// MAIN.JS FOR TITAN HANDYMAN WEBSITE
-// ================================
+// ✅ Firebase Setup
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+import { getFirestore, collection, addDoc } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
 
-// Get all Book Now buttons
-const bookButtons = document.querySelectorAll('.book-btn');
+// 🔑 Your Firebase Config (replace with your real values!)
+const firebaseConfig = {
+  apiKey: "YOUR_API_KEY",
+  authDomain: "YOUR_PROJECT.firebaseapp.com",
+  projectId: "YOUR_PROJECT_ID",
+  storageBucket: "YOUR_PROJECT.appspot.com",
+  messagingSenderId: "YOUR_SENDER_ID",
+  appId: "YOUR_APP_ID"
+};
 
-// Firebase references
-const auth = firebase.auth();
-const db = firebase.firestore();
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+const auth = getAuth(app);
 
-// FUNCTION: Show service details in modal (if you have modals)
-function showServiceSummary(serviceName, price, description) {
-    const modal = document.getElementById('serviceModal');
-    const modalTitle = document.getElementById('modalTitle');
-    const modalPrice = document.getElementById('modalPrice');
-    const modalDesc = document.getElementById('modalDescription');
+// ✅ Booking Buttons
+document.querySelectorAll(".book-btn").forEach(button => {
+  button.addEventListener("click", async (e) => {
+    const service = e.target.getAttribute("data-service");
+    const price = e.target.getAttribute("data-price");
+    const desc = e.target.getAttribute("data-desc");
 
-    if(modal && modalTitle && modalPrice && modalDesc){
-        modalTitle.innerText = serviceName;
-        modalPrice.innerText = `$${price}`;
-        modalDesc.innerText = description;
-        modal.style.display = 'block';
-    }
-}
+    onAuthStateChanged(auth, async (user) => {
+      if (user) {
+        try {
+          await addDoc(collection(db, "bookings"), {
+            service: service,
+            price: price,
+            description: desc,
+            user: user.email,
+            date: new Date().toISOString()
+          });
 
-// Close modal function (if needed)
-function closeModal() {
-    const modal = document.getElementById('serviceModal');
-    if(modal) modal.style.display = 'none';
-}
-
-// ================================
-// BOOKING FUNCTIONALITY
-// ================================
-bookButtons.forEach(btn => {
-    btn.addEventListener('click', () => {
-        const user = auth.currentUser;
-
-        if (!user) {
-            alert('Please login or register first to book a service.');
-            return;
+          // Redirect to confirmation page
+          window.location.href = `confirmation.html?service=${encodeURIComponent(service)}&price=${price}&desc=${encodeURIComponent(desc)}`;
+        } catch (err) {
+          alert("Error booking service: " + err.message);
         }
-
-        // Read service info from button data attributes
-        const service = btn.getAttribute('data-service');
-        const price = parseFloat(btn.getAttribute('data-price'));
-        const description = btn.getAttribute('data-desc') || "No description available.";
-        const date = new Date().toLocaleString();
-
-        const userRef = db.collection('users').doc(user.uid);
-
-        // Show service summary modal if available
-        showServiceSummary(service, price, description);
-
-        // Ensure user document exists
-        userRef.get().then(doc => {
-            if (!doc.exists) {
-                userRef.set({
-                    email: user.email,
-                    role: 'customer',
-                    points: 0
-                });
-            }
-
-            // Add booking to Firestore
-            db.collection('bookings').add({
-                userId: user.uid,
-                service: service,
-                price: price,
-                date: date,
-                status: 'pending'
-            }).then(() => {
-                // Calculate points: 1 point per $10
-                const pointsToAdd = Math.floor(price / 10);
-                userRef.update({
-                    points: firebase.firestore.FieldValue.increment(pointsToAdd)
-                });
-
-                alert(`Booking successful! You earned ${pointsToAdd} points.`);
-            }).catch(error => {
-                alert('Error booking service: ' + error.message);
-            });
-        }).catch(error => {
-            alert('Error accessing user data: ' + error.message);
-        });
+      } else {
+        alert("Please login or register to book a service.");
+        window.location.href = "login.html";
+      }
     });
+  });
 });
 
-// ================================
-// OPTIONAL: Logout button
-// ================================
-const logoutBtn = document.getElementById('logoutBtn');
-if(logoutBtn){
-    logoutBtn.addEventListener('click', () => {
-        auth.signOut().then(() => {
-            alert('Logged out successfully!');
-            window.location.href = 'index.html';
-        });
-    });
-}
-
-// ================================
-// OPTIONAL: Show customer points on dashboard
-// ================================
-const pointsDisplay = document.getElementById('customerPoints');
-auth.onAuthStateChanged(user => {
-    if(user && pointsDisplay){
-        db.collection('users').doc(user.uid).get().then(doc => {
-            if(doc.exists){
-                pointsDisplay.innerText = doc.data().points;
-            }
-        });
-    }
-});
