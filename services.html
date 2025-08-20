@@ -1,85 +1,174 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Our Services - Titan Handyman</title>
-  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="css/style.css"/>
+
+  <!-- Firebase (compat to match the rest of your site) -->
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+  <script>
+    const firebaseConfig = {
+      apiKey: "AIzaSyDZ0VGdu2CoK5YY7d3__drDy8OW_bAkfCM",
+      authDomain: "titan-company.firebaseapp.com",
+      projectId: "titan-company",
+      storageBucket: "titan-company.firebasestorage.app",
+      messagingSenderId: "993876361774",
+      appId: "1:993876361774:web:b39b768c2a9054c9d2d5bf",
+      measurementId: "G-QY2XM9Y08Y"
+    };
+    firebase.initializeApp(firebaseConfig);
+    window.auth = firebase.auth();
+    window.db = firebase.firestore();
+  </script>
+
+  <script defer src="js/services.js"></script>
 </head>
 <body>
+  <!-- Reuse the same header everywhere -->
   <header>
-    <h1>Titan Handyman & Landscaping</h1>
+    <div class="logo">Titan Handyman</div>
     <nav>
-      <a href="index.html">Home</a>
-      <a href="services.html">Services</a>
-      <a href="about.html">About Us</a>
-      <a href="login.html">Login</a>
+      <ul>
+        <li><a href="index.html">Home</a></li>
+        <li><a class="active" href="services.html">Services</a></li>
+        <li><a href="about.html">About Us</a></li>
+        <li><a href="login.html">Login/Register</a></li>
+      </ul>
     </nav>
   </header>
 
-  <section id="services" class="services-section">
-    <h2 class="section-title">Our Professional Services</h2>
-    <p class="section-subtitle">Titan Handyman & Landscaping – Quality you can trust</p>
+  <main class="services-container">
+    <h1>Our Professional Services</h1>
+    <p>Tap a service to expand. Choose a price tier, review what’s included, then book.</p>
 
-    <div class="services-container">
-      <!-- Lawn Care -->
-      <div class="service-card">
-        <img src="images/lawn.jpg" alt="Lawn Mowing" class="service-img" />
-        <h3>Lawn Care & Mowing</h3>
-        <p>Keep your yard fresh, clean, and healthy.</p>
-        <p class="price">$50</p>
-        <button class="book-btn" 
-          data-service="Lawn Mowing" 
-          data-price="50" 
-          data-desc="Professional mowing, trimming, and cleanup for a perfect yard.">
-          Book Now
-        </button>
+    <!-- Lawn Care -->
+    <section class="service">
+      <button class="service-toggle">
+        Lawn Care & Grass Cutting
+        <span class="chevron">▼</span>
+      </button>
+      <div class="service-details" data-service="Lawn Mowing">
+        <h3>Pricing</h3>
+        <select class="price-select">
+          <option value="40" data-tier="Basic">Basic – Small yard ($40)</option>
+          <option value="60" data-tier="Standard">Standard – Medium yard ($60)</option>
+          <option value="85" data-tier="Premium">Premium – Large yard ($85)</option>
+        </select>
+
+        <h3>What We Do</h3>
+        <ul>
+          <li>Professional mowing & precise edging</li>
+          <li>Weed‑trimming around fences & obstacles</li>
+          <li>Driveway & walkway blow‑off</li>
+        </ul>
+
+        <h3>Summary</h3>
+        <p class="summary">
+          Reliable lawn maintenance with tidy edges, debris cleanup, and a consistently clean look.
+        </p>
+
+        <button class="book-service btn-primary">Book This Service</button>
       </div>
+    </section>
 
-      <!-- Gutter Cleaning -->
-      <div class="service-card">
-        <img src="images/gutter.jpg" alt="Gutter Cleaning" class="service-img" />
-        <h3>Gutter Cleaning</h3>
-        <p>Protect your home from clogs and water damage.</p>
-        <p class="price">$75</p>
-        <button class="book-btn" 
-          data-service="Gutter Cleaning" 
-          data-price="75" 
-          data-desc="Thorough cleaning to keep your gutters flowing.">
-          Book Now
-        </button>
+    <!-- Gutter Cleaning -->
+    <section class="service">
+      <button class="service-toggle">
+        Gutter Cleaning
+        <span class="chevron">▼</span>
+      </button>
+      <div class="service-details" data-service="Gutter Cleaning">
+        <h3>Pricing</h3>
+        <select class="price-select">
+          <option value="75" data-tier="Single‑Story">Single‑story Home ($75)</option>
+          <option value="110" data-tier="Two‑Story">Two‑story Home ($110)</option>
+          <option value="150" data-tier="Large / Complex">Large or Complex Roofline ($150)</option>
+        </select>
+
+        <h3>What We Do</h3>
+        <ul>
+          <li>Remove leaves, sticks, and debris</li>
+          <li>Flush downspouts to ensure flow</li>
+          <li>Visual roofline & fascia check</li>
+        </ul>
+
+        <h3>Summary</h3>
+        <p class="summary">
+          Prevent overflow & water damage with a thorough, safety‑first gutter clean.
+        </p>
+
+        <button class="book-service btn-primary">Book This Service</button>
       </div>
+    </section>
 
-      <!-- Pressure Washing -->
-      <div class="service-card">
-        <img src="images/pressure.jpg" alt="Pressure Washing" class="service-img" />
-        <h3>Pressure Washing</h3>
-        <p>Restore the shine of your home, driveway, or deck.</p>
-        <p class="price">$120</p>
-        <button class="book-btn" 
-          data-service="Pressure Washing" 
-          data-price="120" 
-          data-desc="High-quality pressure washing for driveways, siding, and decks.">
-          Book Now
-        </button>
+    <!-- Pressure Washing -->
+    <section class="service">
+      <button class="service-toggle">
+        Pressure Washing
+        <span class="chevron">▼</span>
+      </button>
+      <div class="service-details" data-service="Pressure Washing">
+        <h3>Pricing</h3>
+        <select class="price-select">
+          <option value="100" data-tier="Driveway">Driveway / Walkways ($100)</option>
+          <option value="160" data-tier="Siding">House Siding ($160)</option>
+          <option value="200" data-tier="Deck/Patio">Deck / Patio Deep Clean ($200)</option>
+        </select>
+
+        <h3>What We Do</h3>
+        <ul>
+          <li>Pre‑rinse, detergent application, power wash</li>
+          <li>Mildew & grime treatment where needed</li>
+          <li>Rinse & site cleanup</li>
+        </ul>
+
+        <h3>Summary</h3>
+        <p class="summary">
+          Restore curb appeal with safe, effective washing for concrete, siding, and wood.
+        </p>
+
+        <button class="book-service btn-primary">Book This Service</button>
       </div>
+    </section>
 
-      <!-- Painting -->
-      <div class="service-card">
-        <img src="images/painting.jpg" alt="Painting" class="service-img" />
-        <h3>Painting Services</h3>
-        <p>From touch-ups to full interior/exterior painting.</p>
-        <p class="price">$200</p>
-        <button class="book-btn" 
-          data-service="Painting" 
-          data-price="200" 
-          data-desc="Professional painting for walls, siding, fences, and more.">
-          Book Now
-        </button>
+    <!-- Painting -->
+    <section class="service">
+      <button class="service-toggle">
+        Exterior / Interior Painting
+        <span class="chevron">▼</span>
+      </button>
+      <div class="service-details" data-service="Painting">
+        <h3>Pricing</h3>
+        <select class="price-select">
+          <option value="200" data-tier="Room">Interior Room (starting at $200)</option>
+          <option value="450" data-tier="Exterior Wall">Exterior Side/Wall (starting at $450)</option>
+          <option value="1200" data-tier="Whole Exterior">Whole Exterior (from $1200)</option>
+        </select>
+
+        <h3>What We Do</h3>
+        <ul>
+          <li>Surface prep: patching, sanding, caulking</li>
+          <li>Primer + 1–2 coats premium paint</li>
+          <li>Tape, cover & cleanup included</li>
+        </ul>
+
+        <h3>Summary</h3>
+        <p class="summary">
+          Professional prep and finish for long‑lasting, even coverage and clean lines.
+        </p>
+
+        <button class="book-service btn-primary">Book This Service</button>
       </div>
-    </div>
-  </section>
+    </section>
+  </main>
 
-  <script src="main.js"></script>
+  <footer>
+    <p>&copy; 2025 Titan Handyman. All rights reserved.</p>
+  </footer>
 </body>
 </html>
+
