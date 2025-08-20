@@ -1,99 +1,85 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Services - Titan Handyman</title>
-<link rel="stylesheet" href="css/style.css">
-
-<!-- Firebase -->
-<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
-
-<script>
-const firebaseConfig = {
-    apiKey: "AIzaSyDZ0VGdu2CoK5YY7d3__drDy8OW_bAkfCM",
-    authDomain: "titan-company.firebaseapp.com",
-    projectId: "titan-company",
-    storageBucket: "titan-company.firebasestorage.app",
-    messagingSenderId: "993876361774",
-    appId: "1:993876361774:web:b39b768c2a9054c9d2d5bf",
-    measurementId: "G-QY2XM9Y08Y"
-};
-firebase.initializeApp(firebaseConfig);
-const auth = firebase.auth();
-const db = firebase.firestore();
-</script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Our Services - Titan Handyman</title>
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
-<header>
-  <div class="logo">Titan Handyman</div>
-  <nav>
-    <ul>
-      <li><a href="index.html">Home</a></li>
-      <li><a href="about.html">About Us</a></li>
-      <li><a href="services.html">Services</a></li>
-      <li><a href="gallery.html">Gallery</a></li>
-      <li><a href="contact.html">Contact</a></li>
-      <li><a href="login.html">Login/Register</a></li>
-    </ul>
-  </nav>
-</header>
+  <header>
+    <h1>Titan Handyman & Landscaping</h1>
+    <nav>
+      <a href="index.html">Home</a>
+      <a href="services.html">Services</a>
+      <a href="about.html">About Us</a>
+      <a href="login.html">Login</a>
+    </nav>
+  </header>
 
-<section class="service-grid">
-  <div class="service-box" data-modal="lawnModal" data-service="Lawn Care" data-price="50">
-    <h3>Lawn Care</h3>
-    <p>$50 per visit</p>
-    <button class="book-btn" data-service="Lawn Care" data-price="50">Book Now</button>
-  </div>
-  <div class="service-box" data-modal="paintingModal" data-service="Painting" data-price="100">
-    <h3>Painting</h3>
-    <p>$100 per room</p>
-    <button class="book-btn" data-service="Painting" data-price="100">Book Now</button>
-  </div>
-  <div class="service-box" data-modal="gutterModal" data-service="Gutter Cleaning" data-price="75">
-    <h3>Gutter Cleaning</h3>
-    <p>$75 per house</p>
-    <button class="book-btn" data-service="Gutter Cleaning" data-price="75">Book Now</button>
-  </div>
-  <div class="service-box" data-modal="pressureModal" data-service="Pressure Washing" data-price="150">
-    <h3>Pressure Washing</h3>
-    <p>$150 per house</p>
-    <button class="book-btn" data-service="Pressure Washing" data-price="150">Book Now</button>
-  </div>
-</section>
+  <section id="services" class="services-section">
+    <h2 class="section-title">Our Professional Services</h2>
+    <p class="section-subtitle">Titan Handyman & Landscaping – Quality you can trust</p>
 
-<!-- Modals -->
-<div class="modal" id="lawnModal">
-  <div class="modal-content">
-    <span class="close">&times;</span>
-    <h3>Lawn Care</h3>
-    <p>We mow, trim, and maintain your lawn to keep it healthy and beautiful.</p>
-  </div>
-</div>
-<div class="modal" id="paintingModal">
-  <div class="modal-content">
-    <span class="close">&times;</span>
-    <h3>Painting</h3>
-    <p>Interior and exterior painting services. We prep, paint, and clean up professionally.</p>
-  </div>
-</div>
-<div class="modal" id="gutterModal">
-  <div class="modal-content">
-    <span class="close">&times;</span>
-    <h3>Gutter Cleaning</h3>
-    <p>Remove debris, flush gutters, and ensure proper water flow to protect your home.</p>
-  </div>
-</div>
-<div class="modal" id="pressureModal">
-  <div class="modal-content">
-    <span class="close">&times;</span>
-    <h3>Pressure Washing</h3>
-    <p>We clean decks, driveways, siding, and other surfaces to make your property shine.</p>
-  </div>
-</div>
+    <div class="services-container">
+      <!-- Lawn Care -->
+      <div class="service-card">
+        <img src="images/lawn.jpg" alt="Lawn Mowing" class="service-img" />
+        <h3>Lawn Care & Mowing</h3>
+        <p>Keep your yard fresh, clean, and healthy.</p>
+        <p class="price">$50</p>
+        <button class="book-btn" 
+          data-service="Lawn Mowing" 
+          data-price="50" 
+          data-desc="Professional mowing, trimming, and cleanup for a perfect yard.">
+          Book Now
+        </button>
+      </div>
 
-<script src="js/main.js"></script>
+      <!-- Gutter Cleaning -->
+      <div class="service-card">
+        <img src="images/gutter.jpg" alt="Gutter Cleaning" class="service-img" />
+        <h3>Gutter Cleaning</h3>
+        <p>Protect your home from clogs and water damage.</p>
+        <p class="price">$75</p>
+        <button class="book-btn" 
+          data-service="Gutter Cleaning" 
+          data-price="75" 
+          data-desc="Thorough cleaning to keep your gutters flowing.">
+          Book Now
+        </button>
+      </div>
+
+      <!-- Pressure Washing -->
+      <div class="service-card">
+        <img src="images/pressure.jpg" alt="Pressure Washing" class="service-img" />
+        <h3>Pressure Washing</h3>
+        <p>Restore the shine of your home, driveway, or deck.</p>
+        <p class="price">$120</p>
+        <button class="book-btn" 
+          data-service="Pressure Washing" 
+          data-price="120" 
+          data-desc="High-quality pressure washing for driveways, siding, and decks.">
+          Book Now
+        </button>
+      </div>
+
+      <!-- Painting -->
+      <div class="service-card">
+        <img src="images/painting.jpg" alt="Painting" class="service-img" />
+        <h3>Painting Services</h3>
+        <p>From touch-ups to full interior/exterior painting.</p>
+        <p class="price">$200</p>
+        <button class="book-btn" 
+          data-service="Painting" 
+          data-price="200" 
+          data-desc="Professional painting for walls, siding, fences, and more.">
+          Book Now
+        </button>
+      </div>
+    </div>
+  </section>
+
+  <script src="main.js"></script>
 </body>
 </html>
