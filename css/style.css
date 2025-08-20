@@ -1,216 +1,209 @@
-/* General */
+/* ==== Global Styling ==== */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: Arial, sans-serif;
+}
+
 body {
-    font-family: Arial, sans-serif;
-    margin: 0;
-    padding: 0;
-    background: #f5f5f5;
+  line-height: 1.6;
+  background: #f4f4f4;
+  color: #333;
 }
 
+.container {
+  width: 90%;
+  margin: auto;
+  overflow: hidden;
+}
+
+/* ==== Navbar ==== */
 header {
-    background: #1e90ff;
-    color: white;
-    padding: 15px 20px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+  background: linear-gradient(90deg, #2c7a2c, #1e5d1e);
+  color: #fff;
+  padding: 1rem 0;
 }
 
-header .logo {
-    font-size: 1.8em;
-    font-weight: bold;
+header h1 {
+  text-align: center;
 }
 
-header nav ul {
-    list-style: none;
-    display: flex;
-    margin: 0;
-    padding: 0;
+nav {
+  display: flex;
+  justify-content: center;
+  margin-top: 0.5rem;
 }
 
-header nav ul li {
-    margin-left: 20px;
+nav a {
+  color: #fff;
+  text-decoration: none;
+  margin: 0 15px;
+  font-weight: bold;
+  transition: color 0.3s ease;
 }
 
-header nav ul li a {
-    color: white;
-    text-decoration: none;
-    font-weight: 500;
+nav a:hover {
+  color: #d4fcd4;
 }
 
-header nav ul li a:hover {
-    text-decoration: underline;
-}
-
-/* Hero Section */
+/* ==== Hero Section ==== */
 .hero {
-    background: #00bfff url('../images/hero.jpg') center/cover no-repeat;
-    height: 400px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: white;
-    text-align: center;
+  background: url('images/hero-yard.jpg') no-repeat center center/cover;
+  height: 70vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  text-align: center;
+  flex-direction: column;
 }
 
-.hero .btn {
-    background: #fff;
-    color: #00bfff;
-    padding: 10px 20px;
-    margin: 10px;
-    text-decoration: none;
-    border-radius: 5px;
-    font-weight: bold;
-    transition: 0.3s;
+.hero h1 {
+  font-size: 3rem;
+  text-shadow: 2px 2px 5px rgba(0,0,0,0.6);
 }
 
-.hero .btn:hover {
-    background: #f0f0f0;
+.hero p {
+  font-size: 1.2rem;
+  margin-top: 10px;
 }
 
-/* Quick Services */
-.quick-services {
-    padding: 50px 20px;
-    text-align: center;
-}
-
-.service-icons {
-    display: flex;
-    justify-content: center;
-    flex-wrap: wrap;
-    gap: 20px;
-}
-
-.service-card {
-    background: white;
-    padding: 20px;
-    border-radius: 10px;
-    width: 200px;
-    box-shadow: 0 0 10px rgba(0,0,0,0.1);
-    cursor: pointer;
-    transition: 0.3s;
-    text-align: center;
-}
-
-.service-card:hover {
-    transform: scale(1.05);
-}
-
-.service-card img {
-    width: 100px;
-    height: 100px;
-    object-fit: contain;
-}
-
-/* Service Boxes */
-.service-box {
-    background: white;
-    padding: 20px;
-    border-radius: 10px;
-    margin: 20px;
-    text-align: center;
-    display: inline-block;
-    width: 200px;
-    box-shadow: 0 0 10px rgba(0,0,0,0.1);
-    cursor: pointer;
-}
-
-.service-box:hover {
-    transform: scale(1.03);
-}
-
-.book-btn {
-    margin-top: 10px;
-    padding: 8px 15px;
-    background: #1e90ff;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    font-weight: bold;
-}
-
-.book-btn:hover {
-    background: #00bfff;
-}
-
-/* Modals */
-.modal {
-    display: none;
-    position: fixed;
-    top: 0; left: 0; right: 0; bottom: 0;
-    background: rgba(0,0,0,0.5);
-    justify-content: center;
-    align-items: center;
-    z-index: 100;
-}
-
-.modal-content {
-    background: white;
-    padding: 20px;
-    border-radius: 10px;
-    width: 400px;
-    text-align: center;
-    position: relative;
-}
-
-.close {
-    float: right;
-    cursor: pointer;
-    font-size: 1.2em;
-}
-
-/* Tables */
-table {
-    width: 90%;
-    margin: 20px auto;
-    border-collapse: collapse;
-    background: white;
-}
-
-table, th, td {
-    border: 1px solid #ddd;
-}
-
-th, td {
-    padding: 10px;
-    text-align: center;
-}
-
-th {
-    background: #1e90ff;
-    color: white;
-}
-
-/* Buttons */
+/* ==== Buttons ==== */
 .btn {
-    padding: 8px 15px;
-    background: #1e90ff;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    font-weight: bold;
-    transition: 0.3s;
+  display: inline-block;
+  padding: 10px 20px;
+  background: #2c7a2c;
+  color: #fff;
+  border-radius: 5px;
+  text-decoration: none;
+  transition: background 0.3s;
+  margin-top: 15px;
 }
 
 .btn:hover {
-    background: #00bfff;
+  background: #1e5d1e;
 }
 
-/* Login/Register Form */
-.login {
-    max-width: 400px;
-    margin: 50px auto;
-    background: white;
-    padding: 20px;
-    border-radius: 10px;
-    text-align: center;
+/* ==== About Section ==== */
+.about {
+  padding: 2rem;
+  background: #fff;
+  margin: 2rem auto;
+  border-radius: 10px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
 }
 
-.login input {
-    width: 80%;
-    padding: 10px;
-    margin: 10px 0;
-    border: 1px solid #ccc;
-    border-radius: 5px;
+.about h1 {
+  text-align: center;
+  margin-bottom: 1rem;
+  color: #2c7a2c;
+}
+
+.about p {
+  text-align: justify;
+  margin-bottom: 1rem;
+  font-size: 1.1rem;
+  line-height: 1.8;
+}
+
+/* ==== Contact Form ==== */
+.contact {
+  background: #fff;
+  padding: 2rem;
+  margin: 2rem auto;
+  border-radius: 10px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+}
+
+.contact h1 {
+  text-align: center;
+  color: #2c7a2c;
+  margin-bottom: 1rem;
+}
+
+.contact form {
+  display: grid;
+  gap: 1rem;
+}
+
+.contact input,
+.contact textarea {
+  padding: 0.8rem;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  width: 100%;
+}
+
+.contact button {
+  background: #2c7a2c;
+  color: white;
+  border: none;
+  padding: 1rem;
+  cursor: pointer;
+  border-radius: 5px;
+  transition: background 0.3s;
+}
+
+.contact button:hover {
+  background: #1e5d1e;
+}
+
+/* ==== Services Page Styling ==== */
+.services {
+  max-width: 800px;
+  margin: 2rem auto;
+  padding: 1rem;
+}
+
+.services h1 {
+  text-align: center;
+  color: #2c7a2c;
+  margin-bottom: 1rem;
+}
+
+.service-card {
+  margin-bottom: 1rem;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+}
+
+.service-toggle {
+  width: 100%;
+  text-align: left;
+  background: #2c7a2c;
+  color: white;
+  padding: 1rem;
+  font-size: 1.2rem;
+  font-weight: bold;
+  border: none;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+
+.service-toggle:hover {
+  background: #256025;
+}
+
+.service-content {
+  display: none;
+  padding: 1rem;
+  background: #f9f9f9;
+  animation: dropdown 0.3s ease-in-out;
+}
+
+@keyframes dropdown {
+  from {opacity: 0; transform: translateY(-5px);}
+  to {opacity: 1; transform: translateY(0);}
+}
+
+/* ==== Footer ==== */
+footer {
+  text-align: center;
+  padding: 1rem;
+  background: #2c7a2c;
+  color: #fff;
+  margin-top: 2rem;
 }
