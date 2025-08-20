@@ -1,50 +1,89 @@
-// ✅ Firebase Setup
-import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
-import { getFirestore, collection, addDoc } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
-import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+// ===============================
+// SERVICE DROPDOWNS
+// ===============================
+document.querySelectorAll(".service-toggle").forEach(button => {
+  button.addEventListener("click", () => {
+    const content = button.nextElementSibling;
 
-// 🔑 Your Firebase Config (replace with your real values!)
-const firebaseConfig = {
-  apiKey: "YOUR_API_KEY",
-  authDomain: "YOUR_PROJECT.firebaseapp.com",
-  projectId: "YOUR_PROJECT_ID",
-  storageBucket: "YOUR_PROJECT.appspot.com",
-  messagingSenderId: "YOUR_SENDER_ID",
-  appId: "YOUR_APP_ID"
-};
-
-const app = initializeApp(firebaseConfig);
-const db = getFirestore(app);
-const auth = getAuth(app);
-
-// ✅ Booking Buttons
-document.querySelectorAll(".book-btn").forEach(button => {
-  button.addEventListener("click", async (e) => {
-    const service = e.target.getAttribute("data-service");
-    const price = e.target.getAttribute("data-price");
-    const desc = e.target.getAttribute("data-desc");
-
-    onAuthStateChanged(auth, async (user) => {
-      if (user) {
-        try {
-          await addDoc(collection(db, "bookings"), {
-            service: service,
-            price: price,
-            description: desc,
-            user: user.email,
-            date: new Date().toISOString()
-          });
-
-          // Redirect to confirmation page
-          window.location.href = `confirmation.html?service=${encodeURIComponent(service)}&price=${price}&desc=${encodeURIComponent(desc)}`;
-        } catch (err) {
-          alert("Error booking service: " + err.message);
-        }
-      } else {
-        alert("Please login or register to book a service.");
-        window.location.href = "login.html";
+    // Close all other service dropdowns
+    document.querySelectorAll(".service-content").forEach(section => {
+      if (section !== content) {
+        section.style.display = "none";
       }
     });
+
+    // Toggle current one
+    if (content.style.display === "block") {
+      content.style.display = "none";
+    } else {
+      content.style.display = "block";
+    }
   });
+});
+
+// ===============================
+// REGISTER SYSTEM (Local Storage)
+// ===============================
+document.addEventListener("DOMContentLoaded", () => {
+  const registerForm = document.getElementById("registerForm");
+  if (registerForm) {
+    registerForm.addEventListener("submit", (e) => {
+      e.preventDefault();
+
+      const username = document.getElementById("username").value;
+      const email = document.getElementById("email").value;
+      const password = document.getElementById("password").value;
+
+      let users = JSON.parse(localStorage.getItem("users")) || [];
+
+      // Check if email already registered
+      if (users.some(user => user.email === email)) {
+        alert("Email already registered. Please login.");
+        return;
+      }
+
+      users.push({ username, email, password });
+      localStorage.setItem("users", JSON.stringify(users));
+
+      alert("Registration successful! You can now login.");
+      window.location.href = "login.html";
+    });
+  }
+
+  // ===============================
+  // LOGIN SYSTEM
+  // ===============================
+  const loginForm = document.getElementById("loginForm");
+  if (loginForm) {
+    loginForm.addEventListener("submit", (e) => {
+      e.preventDefault();
+
+      const email = document.getElementById("loginEmail").value;
+      const password = document.getElementById("loginPassword").value;
+
+      let users = JSON.parse(localStorage.getItem("users")) || [];
+      let validUser = users.find(user => user.email === email && user.password === password);
+
+      if (validUser) {
+        alert("Login successful! Welcome " + validUser.username);
+        localStorage.setItem("loggedInUser", JSON.stringify(validUser));
+        window.location.href = "index.html";
+      } else {
+        alert("Invalid email or password. Try again.");
+      }
+    });
+  }
+});
+
+// ===============================
+// BOOK NOW REDIRECT
+// ===============================
+document.addEventListener("DOMContentLoaded", () => {
+  const bookBtn = document.getElementById("bookNowBtn");
+  if (bookBtn) {
+    bookBtn.addEventListener("click", () => {
+      window.location.href = "contact.html";
+    });
+  }
 });
 
