@@ -1,77 +1,472 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Titan Handyman & Landscaping</title>
-<link rel="stylesheet" href="css/style.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Titan Handyman & Landscaping</title>
+  <script defer src="main.js"></script>
+  <link rel="stylesheet" href="style.css">
+  <style>
+    /* ==== Full High-Tech Styles ==== */
+    body {
+      margin: 0;
+      background: #000;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      color: #fff;
+    }
 
-<!-- Firebase -->
-<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+    header.header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1rem 2rem;
+      background: #111;
+      border-bottom: 2px solid #00ffcc20;
+      box-shadow: 0 0 15px rgba(0,255,204,0.3);
+    }
 
-<script>
-const firebaseConfig = {
-    apiKey: "AIzaSyDZ0VGdu2CoK5YY7d3__drDy8OW_bAkfCM",
-    authDomain: "titan-company.firebaseapp.com",
-    projectId: "titan-company",
-    storageBucket: "titan-company.firebasestorage.app",
-    messagingSenderId: "993876361774",
-    appId: "1:993876361774:web:b39b768c2a9054c9d2d5bf",
-    measurementId: "G-QY2XM9Y08Y"
-};
-firebase.initializeApp(firebaseConfig);
-const auth = firebase.auth();
-const db = firebase.firestore();
-</script>
+    header .logo {
+      font-size: 1.5rem;
+      color: #00ffcc;
+      text-shadow: 0 0 10px #00ffcc;
+      font-weight: bold;
+    }
+
+    header nav a {
+      margin-left: 1rem;
+      color: #ccc;
+      text-decoration: none;
+      transition: color 0.3s;
+    }
+
+    header nav a.active,
+    header nav a:hover {
+      color: #00ffcc;
+    }
+
+    main.services {
+      max-width: 1000px;
+      margin: 2rem auto;
+      padding: 2rem;
+      border-radius: 12px;
+      background: linear-gradient(270deg, #000, #111, #000);
+      background-size: 400% 400%;
+      animation: gradientBG 15s ease infinite;
+      box-shadow: 0 0 30px rgba(0,255,204,0.3);
+    }
+
+    @keyframes gradientBG {
+      0% {background-position:0% 50%;}
+      50% {background-position:100% 50%;}
+      100% {background-position:0% 50%;}
+    }
+
+    .services h1 {
+      text-align: center;
+      color: #00ffcc;
+      margin-bottom: 0.5rem;
+      text-shadow: 0 0 12px #00ffcc;
+    }
+
+    .services p {
+      text-align: center;
+      color: #ccc;
+      margin-bottom: 2rem;
+      font-size: 1.1rem;
+    }
+
+    /* Service Cards */
+    .service-card {
+      background: #111;
+      border-radius: 12px;
+      margin-bottom: 1.5rem;
+      box-shadow: 0 0 15px rgba(0,255,204,0.3);
+      overflow: hidden;
+      transition: transform 0.3s, box-shadow 0.3s, border 0.3s;
+      border: 2px solid #00ffcc20;
+    }
+
+    .service-card:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 0 35px rgba(0,255,204,0.7), 0 10px 20px rgba(0,0,0,0.4);
+      border: 2px solid #00ffcc;
+    }
+
+    .service-toggle {
+      width: 100%;
+      text-align: left;
+      background: linear-gradient(90deg, #00ffcc, #008080);
+      color: #000;
+      font-weight: bold;
+      padding: 1rem;
+      border: none;
+      cursor: pointer;
+      font-size: 1.25rem;
+      text-shadow: 0 0 5px #000;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      transition: background 0.3s, color 0.3s, transform 0.3s;
+    }
+
+    .service-toggle:hover {
+      background: linear-gradient(90deg, #008080, #00ffcc);
+      color: #fff;
+      transform: scale(1.02);
+    }
+
+    .service-toggle::after {
+      content: "▼";
+      font-size: 1.2rem;
+      transition: transform 0.3s;
+    }
+
+    .service-card.active .service-toggle::after {
+      transform: rotate(180deg);
+    }
+
+    .service-content {
+      max-height: 0;
+      overflow: hidden;
+      padding: 0 2rem;
+      background: #222;
+      color: #fff;
+      transition: max-height 0.4s ease-in-out, padding 0.4s ease-in-out;
+    }
+
+    .service-content ul {
+      list-style: none;
+      padding-left: 0;
+      margin: 0.5rem 0;
+    }
+
+    .service-content li {
+      margin-bottom: 0.5rem;
+      position: relative;
+      padding-left: 1.5rem;
+      transition: color 0.3s, transform 0.3s;
+    }
+
+    .service-content li::before {
+      content: "•";
+      position: absolute;
+      left: 0;
+      color: #00ffcc;
+      font-weight: bold;
+    }
+
+    .service-content li:hover {
+      color: #00ffcc;
+      transform: translateX(5px);
+    }
+
+    /* Book Now / Button Styles */
+    .button, .book-now {
+      display: inline-block;
+      padding: 0.8rem 2rem;
+      font-size: 1.2rem;
+      font-weight: bold;
+      color: #000;
+      background: linear-gradient(90deg, #00ffcc, #008080);
+      border: 2px solid #00ffcc;
+      border-radius: 8px;
+      cursor: pointer;
+      text-decoration: none;
+      text-align: center;
+      transition: all 0.3s ease;
+      box-shadow: 0 0 10px rgba(0,255,204,0.5);
+      margin-top: 1rem;
+    }
+
+    .button:hover, .book-now:hover {
+      background: linear-gradient(90deg, #008080, #00ffcc);
+      color: #fff;
+      box-shadow: 0 0 25px rgba(0,255,204,0.8), 0 5px 15px rgba(0,0,0,0.5);
+      transform: scale(1.05);
+    }
+
+    /* Pricing Boxes */
+    .pricing-container {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 1.5rem;
+      margin: 2rem 0;
+    }
+
+    .pricing-box {
+      background: #111;
+      border-radius: 12px;
+      padding: 1.5rem;
+      width: 250px;
+      text-align: center;
+      color: #fff;
+      box-shadow: 0 0 15px rgba(0,255,204,0.3);
+      border: 2px solid #00ffcc20;
+      transition: all 0.3s ease;
+      cursor: pointer;
+    }
+
+    .pricing-box:hover {
+      box-shadow: 0 0 35px rgba(0,255,204,0.7), 0 10px 20px rgba(0,0,0,0.4);
+      border: 2px solid #00ffcc;
+      transform: translateY(-5px);
+    }
+
+    .pricing-box h3 {
+      font-size: 1.3rem;
+      margin-bottom: 0.5rem;
+      color: #00ffcc;
+      text-shadow: 0 0 8px #00ffcc;
+    }
+
+    .pricing-box p {
+      font-size: 1rem;
+      margin-bottom: 1rem;
+      color: #ccc;
+    }
+
+    .pricing-box ul {
+      list-style: none;
+      padding-left: 0;
+    }
+
+    .pricing-box ul li {
+      margin-bottom: 0.5rem;
+      position: relative;
+      padding-left: 1.2rem;
+    }
+
+    .pricing-box ul li::before {
+      content: "•";
+      position: absolute;
+      left: 0;
+      color: #00ffcc;
+      font-weight: bold;
+    }
+
+    /* Forms */
+    .form-container {
+      max-width: 450px;
+      margin: 2rem auto;
+      padding: 2rem;
+      background: #111;
+      border-radius: 12px;
+      box-shadow: 0 0 25px rgba(0,255,204,0.3);
+    }
+
+    .form-container h2 {
+      text-align: center;
+      color: #00ffcc;
+      margin-bottom: 1.5rem;
+      text-shadow: 0 0 8px #00ffcc;
+    }
+
+    .form-container input[type="text"],
+    .form-container input[type="email"],
+    .form-container input[type="password"] {
+      width: 100%;
+      padding: 0.8rem;
+      margin-bottom: 1rem;
+      border-radius: 8px;
+      border: 2px solid #00ffcc20;
+      background: #222;
+      color: #fff;
+      font-size: 1rem;
+      transition: all 0.3s ease;
+    }
+
+    .form-container input:focus {
+      border-color: #00ffcc;
+      box-shadow: 0 0 10px #00ffcc;
+      outline: none;
+    }
+
+    .form-container button {
+      width: 100%;
+      padding: 0.8rem;
+      font-size: 1.2rem;
+      font-weight: bold;
+      color: #000;
+      background: linear-gradient(90deg, #00ffcc, #008080);
+      border: 2px solid #00ffcc;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      box-shadow: 0 0 10px rgba(0,255,204,0.5);
+    }
+
+    .form-container button:hover {
+      background: linear-gradient(90deg, #008080, #00ffcc);
+      color: #fff;
+      box-shadow: 0 0 25px rgba(0,255,204,0.8), 0 5px 15px rgba(0,0,0,0.5);
+      transform: scale(1.05);
+    }
+
+    footer {
+      text-align: center;
+      padding: 1rem;
+      background: #000;
+      color: #00ffcc;
+      box-shadow: 0 -5px 15px rgba(0,255,204,0.3);
+    }
+  </style>
 </head>
 <body>
-<header>
-  <div class="logo">Titan Handyman</div>
-  <nav>
-    <ul>
-      <li><a href="index.html">Home</a></li>
-      <li><a href="about.html">About Us</a></li>
-      <li><a href="services.html">Services</a></li>
-      <li><a href="gallery.html">Gallery</a></li>
-      <li><a href="contact.html">Contact</a></li>
-      <li><a href="login.html">Login/Register</a></li>
-    </ul>
-  </nav>
-</header>
+  <header class="header">
+    <div class="logo">Titan Handyman</div>
+    <nav>
+      <a href="index.html">Home</a>
+      <a href="about.html">About Us</a>
+      <a href="services.html" class="active">Services</a>
+      <a href="contact.html">Contact</a>
+      <a href="register.html">Register</a>
+      <a href="login.html">Login</a>
+    </nav>
+  </header>
 
-<section class="hero">
-  <div class="hero-text">
-    <h1>Professional Handyman & Landscaping Services</h1>
-    <p>We Make Your Property Shine</p>
-    <a href="services.html" class="btn">View Services</a>
-    <a href="contact.html" class="btn">Get a Quote</a>
-  </div>
-</section>
+  <main class="services">
+    <h1>Our High-Tech Services</h1>
+    <p>Click a service to view pricing, summary, and what’s included.</p>
 
-<section class="quick-services">
-  <h2>Our Services</h2>
-  <div class="service-icons">
-    <div class="service-card" data-service="lawn">
-      <img src="images/lawn.png" alt="Lawn Care">
-      <p>Lawn Care</p>
+    <!-- Service Cards -->
+    <div class="service-card">
+      <button class="service-toggle">🌱 Lawn Care & Grass Cutting</button>
+      <div class="service-content">
+        <p><strong>Summary:</strong> Professional lawn care to keep your yard pristine.</p>
+        <ul>
+          <li>Mowing, trimming, edging</li>
+          <li>Leaf cleanup</li>
+          <li>Seasonal maintenance</li>
+        </ul>
+        <p><strong>Prices:</strong></p>
+        <ul>
+          <li>Small Yard: $40</li>
+          <li>Medium Yard: $60</li>
+          <li>Large Yard: $80+</li>
+        </ul>
+        <a href="contact.html" class="book-now">Book Now</a>
+      </div>
     </div>
-    <div class="service-card" data-service="painting">
-      <img src="images/painting.png" alt="Painting">
-      <p>Painting</p>
-    </div>
-    <div class="service-card" data-service="gutter">
-      <img src="images/gutter.png" alt="Gutter Cleaning">
-      <p>Gutter Cleaning</p>
-    </div>
-    <div class="service-card" data-service="pressure">
-      <img src="images/pressure.png" alt="Pressure Washing">
-      <p>Pressure Washing</p>
-    </div>
-  </div>
-</section>
 
-<script src="js/main.js"></script>
+    <div class="service-card">
+      <button class="service-toggle">🏠 Gutter Cleaning</button>
+      <div class="service-content">
+        <p><strong>Summary:</strong> Keep gutters clean and flowing to prevent water damage.</p>
+        <ul>
+          <li>Debris removal</li>
+          <li>Downspout flushing</li>
+          <li>Leak inspection</li>
+        </ul>
+        <p><strong>Prices:</strong> Starting at $75</p>
+        <a href="contact.html" class="book-now">Book Now</a>
+      </div>
+    </div>
+
+    <div class="service-card">
+      <button class="service-toggle">🎨 Interior & Exterior Painting</button>
+      <div class="service-content">
+        <p><strong>Summary:</strong> Professional painting for a fresh, modern look.</p>
+        <ul>
+          <li>Interior walls & ceilings</li>
+          <li>Exterior siding & trim</li>
+          <li>Deck & fence staining</li>
+        </ul>
+        <p><strong>Prices:</strong> Custom quote per project</p>
+        <a href="contact.html" class="book-now">Book Now</a>
+      </div>
+    </div>
+
+    <div class="service-card">
+      <button class="service-toggle">💦 Pressure Washing</button>
+      <div class="service-content">
+        <p><strong>Summary:</strong> Remove dirt, mildew, and stains from any surface.</p>
+        <ul>
+          <li>Driveways & sidewalks</li>
+          <li>House siding</li>
+          <li>Decks, patios, fences</li>
+        </ul>
+        <p><strong>Prices:</strong></p>
+        <ul>
+          <li>Driveway: $50+</li>
+          <li>House siding: $120+</li>
+          <li>Deck/Patio: $75+</li>
+        </ul>
+        <a href="contact.html" class="book-now">Book Now</a>
+      </div>
+    </div>
+
+    <div class="service-card">
+      <button class="service-toggle">🔧 Handyman Repairs</button>
+      <div class="service-content">
+        <p><strong>Summary:</strong> From small fixes to major projects, we handle it all.</p>
+        <ul>
+          <li>Minor plumbing & electrical</li>
+          <li>Fixture installation & repairs</li>
+          <li>Furniture assembly</li>
+        </ul>
+        <p><strong>Prices:</strong> $50/hour (materials not included)</p>
+        <a href="contact.html" class="book-now">Book Now</a>
+      </div>
+    </div>
+
+    <!-- Pricing Boxes -->
+    <div class="pricing-container">
+      <div class="pricing-box">
+        <h3>Basic Package</h3>
+        <p>Perfect for small homes</p>
+        <ul>
+          <li>Grass Cutting</li>
+          <li>Leaf Cleanup</li>
+          <li>Gutter Cleaning</li>
+        </ul>
+      </div>
+
+      <div class="pricing-box">
+        <h3>Standard Package</h3>
+        <p>Medium homes & properties</p>
+        <ul>
+          <li>Grass Cutting</li>
+          <li>Leaf Cleanup</li>
+          <li>Gutter Cleaning</li>
+          <li>Pressure Washing</li>
+        </ul>
+      </div>
+
+      <div class="pricing-box">
+        <h3>Premium Package</h3>
+        <p>Large homes & complete service</p>
+        <ul>
+          <li>Grass Cutting</li>
+          <li>Leaf Cleanup</li>
+          <li>Gutter Cleaning</li>
+          <li>Pressure Washing</li>
+          <li>Painting & Repairs</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Registration Form Example -->
+    <div class="form-container">
+      <h2>Register Account</h2>
+      <input type="text" placeholder="Full Name" />
+      <input type="email" placeholder="Email" />
+      <input type="password" placeholder="Password" />
+      <button>Register</button>
+    </div>
+
+    <!-- Login Form Example -->
+    <div class="form-container">
+      <h2>Login</h2>
+      <input type="email" placeholder="Email" />
+      <input type="password" placeholder="Password" />
+      <button>Login</button>
+    </div>
+  </main>
+
+  <footer>
+    <p>&copy; 2025 Titan Handyman & Landscaping. All Rights Reserved.</p>
+  </footer>
 </body>
 </html>
+
