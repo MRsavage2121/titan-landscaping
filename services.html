@@ -5,76 +5,109 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Our Services - Titan Handyman & Landscaping</title>
   <link rel="stylesheet" href="style.css">
-  <script defer src="main.js"></script>
 </head>
 <body>
   <header>
-    <div class="logo">Titan Handyman</div>
+    <h1>Titan Handyman & Landscaping</h1>
     <nav>
-      <ul>
-        <li><a href="index.html">Home</a></li>
-        <li><a href="services.html" class="active">Services</a></li>
-        <li><a href="about.html">About Us</a></li>
-        <li><a href="login.html">Login/Register</a></li>
-      </ul>
+      <a href="index.html">Home</a>
+      <a href="about.html">About Us</a>
+      <a href="services.html">Services</a>
+      <a href="contact.html">Contact</a>
+      <a href="register.html">Register</a>
+      <a href="login.html">Login</a>
     </nav>
   </header>
 
-  <main>
-    <section class="services">
-      <h1>Our Services</h1>
-      <p>Select a service below to view details, pricing, and what’s included.</p>
+  <section class="services">
+    <h1>Our Professional Services</h1>
 
-      <!-- Service 1 -->
-      <div class="service-card">
-        <button class="service-toggle">Lawn Care & Grass Cutting</button>
-        <div class="service-content">
-          <p><strong>Starting at:</strong> $40 per yard</p>
-          <p>Includes mowing, edging, trimming, and full clean-up. Perfect for maintaining a neat and healthy lawn.</p>
-        </div>
+    <!-- Lawn Care -->
+    <div class="service-card">
+      <button class="service-toggle">🌱 Lawn Care & Grass Cutting</button>
+      <div class="service-content">
+        <p><strong>Summary:</strong> Keep your lawn looking fresh and healthy with our professional lawn care service.</p>
+        <ul>
+          <li>Grass mowing & trimming</li>
+          <li>Edging sidewalks & driveways</li>
+          <li>Leaf cleanup & disposal</li>
+        </ul>
+        <p><strong>Prices:</strong></p>
+        <ul>
+          <li>Small Yard: $40</li>
+          <li>Medium Yard: $60</li>
+          <li>Large Yard: $80+</li>
+        </ul>
       </div>
+    </div>
 
-      <!-- Service 2 -->
-      <div class="service-card">
-        <button class="service-toggle">Gutter Cleaning</button>
-        <div class="service-content">
-          <p><strong>Starting at:</strong> $75 per home</p>
-          <p>We remove all debris, flush gutters, and ensure downspouts flow properly to prevent water damage.</p>
-        </div>
+    <!-- Gutter Cleaning -->
+    <div class="service-card">
+      <button class="service-toggle">🏠 Gutter Cleaning</button>
+      <div class="service-content">
+        <p><strong>Summary:</strong> Prevent water damage with our complete gutter cleaning and unclogging service.</p>
+        <ul>
+          <li>Debris removal (leaves, sticks, buildup)</li>
+          <li>Downspout flushing</li>
+          <li>Inspection for leaks or damage</li>
+        </ul>
+        <p><strong>Prices:</strong> Starting at $75 (based on home size)</p>
       </div>
+    </div>
 
-      <!-- Service 3 -->
-      <div class="service-card">
-        <button class="service-toggle">Exterior House Painting</button>
-        <div class="service-content">
-          <p><strong>Starting at:</strong> $500 (small homes)</p>
-          <p>Includes surface prep, priming, and professional paint application for a clean, lasting finish.</p>
-        </div>
+    <!-- Painting -->
+    <div class="service-card">
+      <button class="service-toggle">🎨 Interior & Exterior Painting</button>
+      <div class="service-content">
+        <p><strong>Summary:</strong> Transform your home with our affordable painting services—inside or out.</p>
+        <ul>
+          <li>Interior walls & ceilings</li>
+          <li>Exterior siding & trim</li>
+          <li>Deck & fence staining</li>
+        </ul>
+        <p><strong>Prices:</strong> Quotes available upon request (depends on project size)</p>
       </div>
+    </div>
 
-      <!-- Service 4 -->
-      <div class="service-card">
-        <button class="service-toggle">Pressure Washing</button>
-        <div class="service-content">
-          <p><strong>Starting at:</strong> $100 per driveway</p>
-          <p>Removes dirt, grime, mildew, and stains from driveways, patios, decks, and siding.</p>
-        </div>
+    <!-- Pressure Washing -->
+    <div class="service-card">
+      <button class="service-toggle">💦 Pressure Washing</button>
+      <div class="service-content">
+        <p><strong>Summary:</strong> Bring new life to your home exterior with our power washing services.</p>
+        <ul>
+          <li>Driveways & sidewalks</li>
+          <li>House siding</li>
+          <li>Decks, patios, & fences</li>
+        </ul>
+        <p><strong>Prices:</strong></p>
+        <ul>
+          <li>Driveway: $50+</li>
+          <li>House Siding: $120+</li>
+          <li>Deck/Patio: $75+</li>
+        </ul>
       </div>
+    </div>
 
-      <!-- Service 5 -->
-      <div class="service-card">
-        <button class="service-toggle">Handyman Repairs</button>
-        <div class="service-content">
-          <p><strong>Custom pricing:</strong> Contact us for a free quote</p>
-          <p>We handle minor home repairs, from fixture installation to patching drywall — done right the first time.</p>
-        </div>
+    <!-- Handyman Repairs -->
+    <div class="service-card">
+      <button class="service-toggle">🔧 General Handyman Services</button>
+      <div class="service-content">
+        <p><strong>Summary:</strong> From small fixes to major projects, we handle all your handyman needs.</p>
+        <ul>
+          <li>Minor plumbing & electrical work</li>
+          <li>Furniture assembly</li>
+          <li>Fixture installation & repairs</li>
+        </ul>
+        <p><strong>Prices:</strong> $50/hour (materials not included)</p>
       </div>
-    </section>
-  </main>
+    </div>
+
+  </section>
 
   <footer>
     <p>&copy; 2025 Titan Handyman & Landscaping. All Rights Reserved.</p>
   </footer>
+
+  <script src="main.js"></script>
 </body>
 </html>
-
