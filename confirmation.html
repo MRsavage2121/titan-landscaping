@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Booking Confirmation</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <section class="confirmation-section">
+    <h2>✅ Booking Confirmed!</h2>
+    <p id="service-details"></p>
+    <a href="services.html" class="btn">Book Another Service</a>
+    <a href="index.html" class="btn">Return Home</a>
+  </section>
+
+  <script>
+    // Grab URL params
+    const urlParams = new URLSearchParams(window.location.search);
+    const service = urlParams.get("service");
+    const price = urlParams.get("price");
+    const desc = urlParams.get("desc");
+
+    document.getElementById("service-details").innerHTML = `
+      <strong>Service:</strong> ${service}<br>
+      <strong>Price:</strong> $${price}<br>
+      <strong>Details:</strong> ${desc}<br>
+      <em>We’ll contact you soon to confirm your appointment!</em>
+    `;
+  </script>
+</body>
+</html>
