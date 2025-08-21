@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Titan Handyman & Landscaping</title>
 
-<!-- Firebase SDK -->
+<!-- Firebase Modules -->
 <script type="module">
   import { initializeApp } from "https://www.gstatic.com/firebasejs/10.6.1/firebase-app.js";
   import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.6.1/firebase-auth.js";
@@ -25,112 +25,123 @@
   const auth = getAuth(app);
   const db = getFirestore(app);
 
-  // Make functions global so inline onclick works on GitHub Pages
-  window.toggleService = (btn) => {
-    const card = btn.closest(".service-card");
-    card.classList.toggle("active");
-    const content = card.querySelector(".service-content");
-    if(card.classList.contains("active")){
-      content.style.maxHeight = content.scrollHeight + "px";
-      content.style.padding = "1rem 2rem";
-    } else {
-      content.style.maxHeight = 0;
-      content.style.padding = "0 2rem";
-    }
-  };
+  // Register User
+  const regBtn = document.getElementById("register-btn");
+  if(regBtn){
+    regBtn.addEventListener("click", async () => {
+      const name = document.getElementById("reg-name").value;
+      const email = document.getElementById("reg-email").value;
+      const password = document.getElementById("reg-password").value;
+      const msg = document.getElementById("reg-msg");
+      try{
+        const userCredential = await createUserWithEmailAndPassword(auth,email,password);
+        const user = userCredential.user;
+        await addDoc(collection(db,"users"),{uid:user.uid,name,email,points:0});
+        msg.style.color="#00ffcc";
+        msg.textContent="Registration successful!";
+      }catch(err){
+        msg.style.color="#ff4444";
+        msg.textContent=err.message;
+      }
+    });
+  }
 
-  window.registerUser = async () => {
-    const name = document.getElementById("reg-name").value;
-    const email = document.getElementById("reg-email").value;
-    const password = document.getElementById("reg-password").value;
-    const msg = document.getElementById("reg-msg");
-    try {
-      const userCredential = await createUserWithEmailAndPassword(auth, email, password);
-      const user = userCredential.user;
-      await addDoc(collection(db, "users"), { uid: user.uid, name, email, points: 0 });
-      msg.style.color = "#00ffcc";
-      msg.textContent = "Registration successful!";
-    } catch(err) {
-      msg.style.color = "#ff4444";
-      msg.textContent = err.message;
-    }
-  };
+  // Login User
+  const loginBtn = document.getElementById("login-btn");
+  if(loginBtn){
+    loginBtn.addEventListener("click", async ()=>{
+      const email = document.getElementById("login-email").value;
+      const password = document.getElementById("login-password").value;
+      const msg = document.getElementById("login-msg");
+      try{
+        await signInWithEmailAndPassword(auth,email,password);
+        msg.style.color="#00ffcc";
+        msg.textContent="Login successful!";
+        alert("You are logged in!");
+      }catch(err){
+        msg.style.color="#ff4444";
+        msg.textContent=err.message;
+      }
+    });
+  }
 
-  window.loginUser = async () => {
-    const email = document.getElementById("login-email").value;
-    const password = document.getElementById("login-password").value;
-    const msg = document.getElementById("login-msg");
-    try {
-      await signInWithEmailAndPassword(auth, email, password);
-      msg.style.color = "#00ffcc";
-      msg.textContent = "Login successful!";
-      window.location.href = "dashboard.html";
-    } catch(err) {
-      msg.style.color = "#ff4444";
-      msg.textContent = err.message;
-    }
-  };
+  // Service dropdowns
+  const toggleButtons = document.querySelectorAll(".service-toggle");
+  toggleButtons.forEach(btn=>{
+    btn.addEventListener("click",()=>{
+      const card = btn.closest(".service-card");
+      card.classList.toggle("active");
+      const content = card.querySelector(".service-content");
+      if(card.classList.contains("active")){
+        content.style.maxHeight = content.scrollHeight + "px";
+        content.style.padding="1rem 2rem";
+      }else{
+        content.style.maxHeight=0;
+        content.style.padding="0 2rem";
+      }
+    });
+  });
 
-  window.bookService = async (btn) => {
-    const user = auth.currentUser;
-    if(!user){ alert("Please login to book a service."); return; }
-    const serviceTitle = btn.closest(".service-card").querySelector(".service-toggle").textContent;
-    try {
-      await addDoc(collection(db, "bookings"), { uid: user.uid, service: serviceTitle, timestamp: new Date() });
-      alert("Booking successful!");
-    } catch(err) {
-      alert("Booking failed: " + err.message);
-    }
-  };
+  // Book Now buttons
+  const bookButtons = document.querySelectorAll(".book-now");
+  bookButtons.forEach(btn=>{
+    btn.addEventListener("click", async ()=>{
+      const user = auth.currentUser;
+      if(!user){ alert("Please login to book a service."); return; }
+      const serviceTitle = btn.closest(".service-card").querySelector(".service-toggle").textContent;
+      try{
+        await addDoc(collection(db,"bookings"),{uid:user.uid,service:serviceTitle,timestamp:new Date()});
+        alert("Booking successful!");
+      }catch(err){
+        alert("Booking failed: "+err.message);
+      }
+    });
+  });
+
 </script>
 
 <style>
-  body { margin:0; background:#000; font-family:'Segoe UI', sans-serif; color:#fff; }
-  header.header { display:flex; justify-content:space-between; align-items:center; padding:1rem 2rem; background:#111; border-bottom:2px solid #00ffcc20; box-shadow:0 0 15px rgba(0,255,204,0.3);}
-  header .logo { font-size:1.5rem; color:#00ffcc; text-shadow:0 0 10px #00ffcc; font-weight:bold; }
-  header nav a { margin-left:1rem; color:#ccc; text-decoration:none; transition:color 0.3s;}
-  header nav a.active, header nav a:hover { color:#00ffcc; }
-
-  main.services { max-width:1000px; margin:2rem auto; padding:2rem; border-radius:12px; background:linear-gradient(270deg,#000,#111,#000); background-size:400% 400%; animation: gradientBG 15s ease infinite; box-shadow:0 0 30px rgba(0,255,204,0.3);}
-  @keyframes gradientBG {0%{background-position:0% 50%;}50%{background-position:100% 50%;}100%{background-position:0% 50%;}}
-  .services h1 { text-align:center; color:#00ffcc; margin-bottom:0.5rem; text-shadow:0 0 12px #00ffcc; }
-  .services p { text-align:center; color:#ccc; margin-bottom:2rem; font-size:1.1rem; }
-
-  .service-card { background:#111; border-radius:12px; margin-bottom:1.5rem; box-shadow:0 0 15px rgba(0,255,204,0.3); overflow:hidden; transition: transform 0.3s, box-shadow 0.3s, border 0.3s; border:2px solid #00ffcc20;}
-  .service-card:hover { transform:translateY(-6px); box-shadow:0 0 35px rgba(0,255,204,0.7),0 10px 20px rgba(0,0,0,0.4); border:2px solid #00ffcc; }
-  .service-toggle { width:100%; text-align:left; background:linear-gradient(90deg,#00ffcc,#008080); color:#000; font-weight:bold; padding:1rem; border:none; cursor:pointer; font-size:1.25rem; display:flex; justify-content:space-between; transition:0.3s;}
-  .service-toggle:hover { background:linear-gradient(90deg,#008080,#00ffcc); color:#fff; transform:scale(1.02);}
-  .service-toggle::after { content:"▼"; font-size:1.2rem; transition: transform 0.3s;}
-  .service-card.active .service-toggle::after { transform:rotate(180deg);}
-  .service-content { max-height:0; overflow:hidden; padding:0 2rem; background:#222; color:#fff; transition:max-height 0.4s ease-in-out, padding 0.4s ease-in-out;}
-  .service-content ul { list-style:none; padding-left:0; margin:0.5rem 0; }
-  .service-content li { margin-bottom:0.5rem; padding-left:1.5rem; position:relative; transition:0.3s;}
-  .service-content li::before { content:"•"; position:absolute; left:0; color:#00ffcc; font-weight:bold;}
-  .service-content li:hover { color:#00ffcc; transform:translateX(5px); }
-
-  .button,.book-now { display:inline-block; padding:0.8rem 2rem; font-size:1.2rem; font-weight:bold; color:#000; background:linear-gradient(90deg,#00ffcc,#008080); border:2px solid #00ffcc; border-radius:8px; cursor:pointer; text-decoration:none; text-align:center; transition:0.3s; box-shadow:0 0 10px rgba(0,255,204,0.5); margin-top:1rem;}
-  .button:hover,.book-now:hover { background:linear-gradient(90deg,#008080,#00ffcc); color:#fff; box-shadow:0 0 25px rgba(0,255,204,0.8),0 5px 15px rgba(0,0,0,0.5); transform:scale(1.05); }
-
-  .pricing-container { display:flex; flex-wrap:wrap; justify-content:center; gap:1.5rem; margin:2rem 0; }
-  .pricing-box { background:#111; border-radius:12px; padding:1.5rem; width:250px; text-align:center; color:#fff; box-shadow:0 0 15px rgba(0,255,204,0.3); border:2px solid #00ffcc20; transition:0.3s; cursor:pointer; }
-  .pricing-box:hover { box-shadow:0 0 35px rgba(0,255,204,0.7),0 10px 20px rgba(0,0,0,0.4); border:2px solid #00ffcc; transform:translateY(-5px);}
-  .pricing-box h3 { font-size:1.3rem; margin-bottom:0.5rem; color:#00ffcc; text-shadow:0 0 8px #00ffcc;}
-  .pricing-box p { font-size:1rem; margin-bottom:1rem; color:#ccc; }
-  .pricing-box ul { list-style:none; padding-left:0;}
-  .pricing-box ul li { margin-bottom:0.5rem; position:relative; padding-left:1.2rem;}
-  .pricing-box ul li::before { content:"•"; position:absolute; left:0; color:#00ffcc; font-weight:bold; }
-
-  .form-container { max-width:450px; margin:2rem auto; padding:2rem; background:#111; border-radius:12px; box-shadow:0 0 25px rgba(0,255,204,0.3);}
-  .form-container h2 { text-align:center; color:#00ffcc; margin-bottom:1.5rem; text-shadow:0 0 8px #00ffcc; }
-  .form-container input[type=text],.form-container input[type=email],.form-container input[type=password] { width:100%; padding:0.8rem; margin-bottom:1rem; border-radius:8px; border:2px solid #00ffcc20; background:#222; color:#fff; font-size:1rem; transition:0.3s;}
-  .form-container input:focus { border-color:#00ffcc; box-shadow:0 0 10px #00ffcc; outline:none;}
-  .form-container button { width:100%; padding:0.8rem; font-size:1.2rem; font-weight:bold; color:#000; background:linear-gradient(90deg,#00ffcc,#008080); border:2px solid #00ffcc; border-radius:8px; cursor:pointer; transition:0.3s; box-shadow:0 0 10px rgba(0,255,204,0.5);}
-  .form-container button:hover { background:linear-gradient(90deg,#008080,#00ffcc); color:#fff; box-shadow:0 0 25px rgba(0,255,204,0.8),0 5px 15px rgba(0,0,0,0.5); transform:scale(1.05);}
-  footer { text-align:center; padding:1rem; background:#000; color:#00ffcc; box-shadow:0 -5px 15px rgba(0,255,204,0.3);}
+body{margin:0;font-family:'Segoe UI',sans-serif;background:#000;color:#fff;}
+header.header{display:flex;justify-content:space-between;align-items:center;padding:1rem 2rem;background:#111;border-bottom:2px solid #00ffcc20;box-shadow:0 0 15px rgba(0,255,204,0.3);}
+header .logo{font-size:1.5rem;color:#00ffcc;font-weight:bold;text-shadow:0 0 10px #00ffcc;}
+header nav a{margin-left:1rem;color:#ccc;text-decoration:none;transition:color 0.3s;}
+header nav a.active,header nav a:hover{color:#00ffcc;}
+main.services{max-width:1000px;margin:2rem auto;padding:2rem;border-radius:12px;background:linear-gradient(270deg,#000,#111,#000);background-size:400% 400%;animation:gradientBG 15s ease infinite;box-shadow:0 0 30px rgba(0,255,204,0.3);}
+@keyframes gradientBG{0%{background-position:0% 50%;}50%{background-position:100% 50%;}100%{background-position:0% 50%;}}
+.services h1{text-align:center;color:#00ffcc;margin-bottom:0.5rem;text-shadow:0 0 12px #00ffcc;}
+.services p{text-align:center;color:#ccc;margin-bottom:2rem;font-size:1.1rem;}
+.service-card{background:#111;border-radius:12px;margin-bottom:1.5rem;box-shadow:0 0 15px rgba(0,255,204,0.3);overflow:hidden;transition: transform 0.3s, box-shadow 0.3s, border 0.3s;border:2px solid #00ffcc20;}
+.service-card:hover{transform:translateY(-6px);box-shadow:0 0 35px rgba(0,255,204,0.7),0 10px 20px rgba(0,0,0,0.4);border:2px solid #00ffcc;}
+.service-toggle{width:100%;text-align:left;background:linear-gradient(90deg,#00ffcc,#008080);color:#000;font-weight:bold;padding:1rem;border:none;cursor:pointer;font-size:1.25rem;display:flex;justify-content:space-between;transition:0.3s;}
+.service-toggle:hover{background:linear-gradient(90deg,#008080,#00ffcc);color:#fff;transform:scale(1.02);}
+.service-toggle::after{content:"▼";font-size:1.2rem;transition: transform 0.3s;}
+.service-card.active .service-toggle::after{transform:rotate(180deg);}
+.service-content{max-height:0;overflow:hidden;padding:0 2rem;background:#222;color:#fff;transition:max-height 0.4s ease-in-out, padding 0.4s ease-in-out;}
+.service-content ul{list-style:none;padding-left:0;margin:0.5rem 0;}
+.service-content li{margin-bottom:0.5rem;padding-left:1.5rem;position:relative;transition:0.3s;}
+.service-content li::before{content:"•";position:absolute;left:0;color:#00ffcc;font-weight:bold;}
+.service-content li:hover{color:#00ffcc;transform:translateX(5px);}
+.button,.book-now{display:inline-block;padding:0.8rem 2rem;font-size:1.2rem;font-weight:bold;color:#000;background:linear-gradient(90deg,#00ffcc,#008080);border:2px solid #00ffcc;border-radius:8px;cursor:pointer;text-decoration:none;text-align:center;transition:0.3s;box-shadow:0 0 10px rgba(0,255,204,0.5);margin-top:1rem;}
+.button:hover,.book-now:hover{background:linear-gradient(90deg,#008080,#00ffcc);color:#fff;box-shadow:0 0 25px rgba(0,255,204,0.8),0 5px 15px rgba(0,0,0,0.5);transform:scale(1.05);}
+.pricing-container{display:flex;flex-wrap:wrap;justify-content:center;gap:1.5rem;margin:2rem 0;}
+.pricing-box{background:#111;border-radius:12px;padding:1.5rem;width:250px;text-align:center;color:#fff;box-shadow:0 0 15px rgba(0,255,204,0.3);border:2px solid #00ffcc20;transition:0.3s;cursor:pointer;}
+.pricing-box:hover{box-shadow:0 0 35px rgba(0,255,204,0.7),0 10px 20px rgba(0,0,0,0.4);border:2px solid #00ffcc;transform:translateY(-5px);}
+.pricing-box h3{font-size:1.3rem;margin-bottom:0.5rem;color:#00ffcc;text-shadow:0 0 8px #00ffcc;}
+.pricing-box p{font-size:1rem;margin-bottom:1rem;color:#ccc;}
+.pricing-box ul{list-style:none;padding-left:0;}
+.pricing-box ul li{margin-bottom:0.5rem;position:relative;padding-left:1.2rem;}
+.pricing-box ul li::before{content:"•";position:absolute;left:0;color:#00ffcc;font-weight:bold;}
+.form-container{max-width:450px;margin:2rem auto;padding:2rem;background:#111;border-radius:12px;box-shadow:0 0 25px rgba(0,255,204,0.3);}
+.form-container h2{text-align:center;color:#00ffcc;margin-bottom:1.5rem;text-shadow:0 0 8px #00ffcc;}
+.form-container input[type=text],.form-container input[type=email],.form-container input[type=password]{width:100%;padding:0.8rem;margin-bottom:1rem;border-radius:8px;border:2px solid #00ffcc20;background:#222;color:#fff;font-size:1rem;transition:0.3s;}
+.form-container input:focus{border-color:#00ffcc;box-shadow:0 0 10px #00ffcc;outline:none;}
+.form-container button{width:100%;padding:0.8rem;font-size:1.2rem;font-weight:bold;color:#000;background:linear-gradient(90deg,#00ffcc,#008080);border:2px solid #00ffcc;border-radius:8px;cursor:pointer;transition:0.3s;box-shadow:0 0 10px rgba(0,255,204,0.5);}
+.form-container button:hover{background:linear-gradient(90deg,#008080,#00ffcc);color:#fff;box-shadow:0 0 25px rgba(0,255,204,0.8),0 5px 15px rgba(0,0,0,0.5);transform:scale(1.05);}
+footer{text-align:center;padding:1rem;background:#000;color:#00ffcc;box-shadow:0 -5px 15px rgba(0,255,204,0.3);}
 </style>
 </head>
-
 <body>
+
 <header class="header">
   <div class="logo">Titan Handyman</div>
   <nav>
@@ -138,8 +149,6 @@
     <a href="about.html">About Us</a>
     <a href="services.html" class="active">Services</a>
     <a href="contact.html">Contact</a>
-    <a href="register.html">Register</a>
-    <a href="login.html">Login</a>
   </nav>
 </header>
 
@@ -148,7 +157,7 @@
   <p>Click a service to view pricing, summary, and what’s included.</p>
 
   <div class="service-card">
-    <button class="service-toggle" onclick="toggleService(this)">🌱 Lawn Care & Grass Cutting</button>
+    <button class="service-toggle">🌱 Lawn Care & Grass Cutting</button>
     <div class="service-content">
       <p><strong>Summary:</strong> Professional lawn care to keep your yard pristine.</p>
       <ul>
@@ -162,12 +171,12 @@
         <li>Medium Yard: $60</li>
         <li>Large Yard: $80+</li>
       </ul>
-      <button class="book-now" onclick="bookService(this)">Book Now</button>
+      <button class="book-now">Book Now</button>
     </div>
   </div>
 
   <div class="service-card">
-    <button class="service-toggle" onclick="toggleService(this)">🏠 Gutter Cleaning</button>
+    <button class="service-toggle">🏠 Gutter Cleaning</button>
     <div class="service-content">
       <p><strong>Summary:</strong> Keep gutters clean and flowing to prevent water damage.</p>
       <ul>
@@ -176,42 +185,7 @@
         <li>Leak inspection</li>
       </ul>
       <p><strong>Prices:</strong> Starting at $75</p>
-      <button class="book-now" onclick="bookService(this)">Book Now</button>
-    </div>
-  </div>
-
-  <div class="pricing-container">
-    <div class="pricing-box">
-      <h3>Basic Package</h3>
-      <p>Perfect for small homes</p>
-      <ul>
-        <li>Grass Cutting</li>
-        <li>Leaf Cleanup</li>
-        <li>Gutter Cleaning</li>
-      </ul>
-    </div>
-
-    <div class="pricing-box">
-      <h3>Standard Package</h3>
-      <p>Medium homes & properties</p>
-      <ul>
-        <li>Grass Cutting</li>
-        <li>Leaf Cleanup</li>
-        <li>Gutter Cleaning</li>
-        <li>Pressure Washing</li>
-      </ul>
-    </div>
-
-    <div class="pricing-box">
-      <h3>Premium Package</h3>
-      <p>Large homes & complete service</p>
-      <ul>
-        <li>Grass Cutting</li>
-        <li>Leaf Cleanup</li>
-        <li>Gutter Cleaning</li>
-        <li>Pressure Washing</li>
-        <li>Painting & Repairs</li>
-      </ul>
+      <button class="book-now">Book Now</button>
     </div>
   </div>
 
@@ -220,7 +194,7 @@
     <input type="text" id="reg-name" placeholder="Full Name">
     <input type="email" id="reg-email" placeholder="Email">
     <input type="password" id="reg-password" placeholder="Password">
-    <button onclick="registerUser()">Register</button>
+    <button id="register-btn">Register</button>
     <p id="reg-msg"></p>
   </div>
 
@@ -228,7 +202,7 @@
     <h2>Login</h2>
     <input type="email" id="login-email" placeholder="Email">
     <input type="password" id="login-password" placeholder="Password">
-    <button onclick="loginUser()">Login</button>
+    <button id="login-btn">Login</button>
     <p id="login-msg"></p>
   </div>
 </main>
@@ -236,6 +210,7 @@
 <footer>
   <p>&copy; 2025 Titan Handyman & Landscaping. All Rights Reserved.</p>
 </footer>
+
 </body>
 </html>
 
