@@ -5,102 +5,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Titan Handyman & Landscaping</title>
 
-<!-- Firebase Modules -->
-<script type="module">
-  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.6.1/firebase-app.js";
-  import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.6.1/firebase-auth.js";
-  import { getFirestore, collection, addDoc } from "https://www.gstatic.com/firebasejs/10.6.1/firebase-firestore.js";
-
-  // ====== REPLACE WITH YOUR FIREBASE CONFIG ======
-  const firebaseConfig = {
-    apiKey: "YOUR_API_KEY",
-    authDomain: "YOUR_PROJECT.firebaseapp.com",
-    projectId: "YOUR_PROJECT",
-    storageBucket: "YOUR_PROJECT.appspot.com",
-    messagingSenderId: "YOUR_SENDER_ID",
-    appId: "YOUR_APP_ID"
-  };
-
-  const app = initializeApp(firebaseConfig);
-  const auth = getAuth(app);
-  const db = getFirestore(app);
-
-  // Register User
-  const regBtn = document.getElementById("register-btn");
-  if(regBtn){
-    regBtn.addEventListener("click", async () => {
-      const name = document.getElementById("reg-name").value;
-      const email = document.getElementById("reg-email").value;
-      const password = document.getElementById("reg-password").value;
-      const msg = document.getElementById("reg-msg");
-      try{
-        const userCredential = await createUserWithEmailAndPassword(auth,email,password);
-        const user = userCredential.user;
-        await addDoc(collection(db,"users"),{uid:user.uid,name,email,points:0});
-        msg.style.color="#00ffcc";
-        msg.textContent="Registration successful!";
-      }catch(err){
-        msg.style.color="#ff4444";
-        msg.textContent=err.message;
-      }
-    });
-  }
-
-  // Login User
-  const loginBtn = document.getElementById("login-btn");
-  if(loginBtn){
-    loginBtn.addEventListener("click", async ()=>{
-      const email = document.getElementById("login-email").value;
-      const password = document.getElementById("login-password").value;
-      const msg = document.getElementById("login-msg");
-      try{
-        await signInWithEmailAndPassword(auth,email,password);
-        msg.style.color="#00ffcc";
-        msg.textContent="Login successful!";
-        alert("You are logged in!");
-      }catch(err){
-        msg.style.color="#ff4444";
-        msg.textContent=err.message;
-      }
-    });
-  }
-
-  // Service dropdowns
-  const toggleButtons = document.querySelectorAll(".service-toggle");
-  toggleButtons.forEach(btn=>{
-    btn.addEventListener("click",()=>{
-      const card = btn.closest(".service-card");
-      card.classList.toggle("active");
-      const content = card.querySelector(".service-content");
-      if(card.classList.contains("active")){
-        content.style.maxHeight = content.scrollHeight + "px";
-        content.style.padding="1rem 2rem";
-      }else{
-        content.style.maxHeight=0;
-        content.style.padding="0 2rem";
-      }
-    });
-  });
-
-  // Book Now buttons
-  const bookButtons = document.querySelectorAll(".book-now");
-  bookButtons.forEach(btn=>{
-    btn.addEventListener("click", async ()=>{
-      const user = auth.currentUser;
-      if(!user){ alert("Please login to book a service."); return; }
-      const serviceTitle = btn.closest(".service-card").querySelector(".service-toggle").textContent;
-      try{
-        await addDoc(collection(db,"bookings"),{uid:user.uid,service:serviceTitle,timestamp:new Date()});
-        alert("Booking successful!");
-      }catch(err){
-        alert("Booking failed: "+err.message);
-      }
-    });
-  });
-
-</script>
-
 <style>
+/* High-tech style CSS */
 body{margin:0;font-family:'Segoe UI',sans-serif;background:#000;color:#fff;}
 header.header{display:flex;justify-content:space-between;align-items:center;padding:1rem 2rem;background:#111;border-bottom:2px solid #00ffcc20;box-shadow:0 0 15px rgba(0,255,204,0.3);}
 header .logo{font-size:1.5rem;color:#00ffcc;font-weight:bold;text-shadow:0 0 10px #00ffcc;}
@@ -145,10 +51,10 @@ footer{text-align:center;padding:1rem;background:#000;color:#00ffcc;box-shadow:0
 <header class="header">
   <div class="logo">Titan Handyman</div>
   <nav>
-    <a href="index.html">Home</a>
-    <a href="about.html">About Us</a>
-    <a href="services.html" class="active">Services</a>
-    <a href="contact.html">Contact</a>
+    <a href="#">Home</a>
+    <a href="#">About Us</a>
+    <a href="#" class="active">Services</a>
+    <a href="#">Contact</a>
   </nav>
 </header>
 
@@ -211,7 +117,92 @@ footer{text-align:center;padding:1rem;background:#000;color:#00ffcc;box-shadow:0
   <p>&copy; 2025 Titan Handyman & Landscaping. All Rights Reserved.</p>
 </footer>
 
+<script type="module">
+document.addEventListener("DOMContentLoaded", ()=>{
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.6.1/firebase-app.js";
+  import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.6.1/firebase-auth.js";
+  import { getFirestore, collection, addDoc } from "https://www.gstatic.com/firebasejs/10.6.1/firebase-firestore.js";
+
+  const firebaseConfig = {
+    apiKey: "AIzaSyDZ0VGdu2CoK5YY7d3__drDy8OW_bAkfCM",
+    authDomain: "titan-company.firebaseapp.com",
+    projectId: "titan-company",
+    storageBucket: "titan-company.firebasestorage.app",
+    messagingSenderId: "993876361774",
+    appId: "1:993876361774:web:b39b768c2a9054c9d2d5bf",
+    measurementId: "G-QY2XM9Y08Y"
+  };
+
+  const app = initializeApp(firebaseConfig);
+  const auth = getAuth(app);
+  const db = getFirestore(app);
+
+  // Register
+  const regBtn = document.getElementById("register-btn");
+  const regMsg = document.getElementById("reg-msg");
+  regBtn.addEventListener("click", async ()=>{
+    const name=document.getElementById("reg-name").value;
+    const email=document.getElementById("reg-email").value;
+    const pass=document.getElementById("reg-password").value;
+    try{
+      const userCred = await createUserWithEmailAndPassword(auth,email,pass);
+      await addDoc(collection(db,"users"),{uid:userCred.user.uid,name,email,points:0});
+      regMsg.style.color="#00ffcc";
+      regMsg.textContent="Registration successful!";
+    }catch(err){
+      regMsg.style.color="#ff4444";
+      regMsg.textContent=err.message;
+    }
+  });
+
+  // Login
+  const loginBtn = document.getElementById("login-btn");
+  const loginMsg = document.getElementById("login-msg");
+  loginBtn.addEventListener("click", async ()=>{
+    const email=document.getElementById("login-email").value;
+    const pass=document.getElementById("login-password").value;
+    try{
+      await signInWithEmailAndPassword(auth,email,pass);
+      loginMsg.style.color="#00ffcc";
+      loginMsg.textContent="Login successful!";
+      alert("Logged in!");
+    }catch(err){
+      loginMsg.style.color="#ff4444";
+      loginMsg.textContent=err.message;
+    }
+  });
+
+  // Service dropdowns
+  document.querySelectorAll(".service-toggle").forEach(btn=>{
+    btn.addEventListener("click",()=>{
+      const card = btn.closest(".service-card");
+      card.classList.toggle("active");
+      const content = card.querySelector(".service-content");
+      if(card.classList.contains("active")){
+        content.style.maxHeight = content.scrollHeight + "px";
+        content.style.padding="1rem 2rem";
+      }else{
+        content.style.maxHeight=0;
+        content.style.padding="0 2rem";
+      }
+    });
+  });
+
+  // Book Now
+  document.querySelectorAll(".book-now").forEach(btn=>{
+    btn.addEventListener("click", async ()=>{
+      const user = auth.currentUser;
+      if(!user){ alert("Please login to book."); return; }
+      const service = btn.closest(".service-card").querySelector(".service-toggle").textContent;
+      try{
+        await addDoc(collection(db,"bookings"),{uid:user.uid,service,timestamp:new Date()});
+        alert("Booking successful!");
+      }catch(err){ alert("Booking failed: "+err.message); }
+    });
+  });
+});
+</script>
+
 </body>
 </html>
-
 
